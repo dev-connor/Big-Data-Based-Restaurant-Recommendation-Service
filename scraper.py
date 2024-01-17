@@ -33,11 +33,14 @@ for item_box in item_boxes:
     item_price = item_box.find('p',class_='price')
     prices = price_pattern.findall(item_price.text)
 
+    img_box = item_box.find('div',class_='list_img').find('img')
+
     item = {
         'brand': brand,
         'name': name,
-        'url': url,
+        'url': 'https:' + url,
         'original_price': prices[0],
         'sale_price': prices[1],
+        'image':img_box['data-original'],
     }
     print(item)
