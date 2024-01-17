@@ -1,20 +1,14 @@
 from bs4 import BeautifulSoup
 import requests
 
-url = 'https://www.musinsa.com/app/contents/onsale'
+url = 'https://www.musinsa.com/categories/item/018'
 params = {
-    'd_cat_cd': '018',
-    'page_kind': 'onsale',
-    'list_kind': 'small',
-    'sort': 'pop_category',
-    'page': '1',
-    'display_cnt': '90',
-    'sale_fr_rate': '70',
-    'sale_yn': 'Y',
-    'sale_dt_yn': 'Y',
-    'sale_campaign_ym': 'N',
-    'chk_timesale': 'on',
+}
+headers = {
+    'user-agent': "'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'"
 }
 
-response = requests.get(url,params=params)
-print(response.status_code)
+response = requests.get(url, params=params, headers=headers)
+soup = BeautifulSoup(response.text,'html.parser')
+list_box = soup.find('div', class_='list-box')
+print(list_box)
