@@ -1,7 +1,9 @@
 # This example requires the 'message_content' intent.
+import os
 
 import discord
 from scraper import Scraper
+from dotenv import load_dotenv
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -35,4 +37,7 @@ async def on_message(message):
 
             await message.channel.send(embed=embed)
 
-client.run('MTE5Nzg4NTM1MTkyNzIzNDYzMA.GUhEyi.M88kcAPec5qwZO7DnxCwLWpeeAdj4__1lOl878')
+load_dotenv()
+
+token = os.getenv('token')
+client.run(token)
