@@ -53,6 +53,8 @@ class Scraper:
                 'image': img_box,
             }
             result.append(item)
+            if len(result) == 3:
+                break
 
         return result
 
