@@ -10,6 +10,16 @@ intents.message_content = True
 
 client = discord.Client(intents=intents)
 
+def build_message(item):
+    embed = discord.Embed(type='rich', title=item['name'])
+    embed.description = item['brand']
+    embed.set_thumbnail(url=item['image'])
+    embed.url = item['url']
+    embed.add_field(name='원래 가격', value=item['original_price'], inline=True)
+    embed.add_field(name='할인 가격', value=item['sale_price'], inline=True)
+    return embed
+
+
 @client.event
 async def on_ready():
     print(f'We have logged in as {client.user}')
@@ -26,18 +36,11 @@ async def on_message(message):
         # 무신사 타임세일 결과를 출력한다.
         scraper = Scraper()
         results = scraper.do()
+        embeds = []
 
         for item in results:
-            embed = discord.Embed(type='rich', title=item['name'])
-            embed.description = item['brand']
-            embed.set_thumbnail(url=item['image'])
-            embed.url = item['url']
-            embed.add_field(name='원래 가격',value=item['original_price'],inline=True)
-            embed.add_field(name='할인 가격',value=item['sale_price'],inline=True)
-
-            await message.channel.send(embed=embed)
+            embeds.append(build_message(item))
+        await message.channel.send(embeds=embeds)
 
 load_dotenv()
-
-token = os.getenv('token')
-client.run(token)
+client.run(os.getenv('token'))
